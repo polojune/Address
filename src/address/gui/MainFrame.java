@@ -106,6 +106,47 @@ public class MainFrame extends JFrame {
 
 	// 리스너 등록
 	private void initListener() {
+		frButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				notifyUserList(GroupType.친구);
+				
+			}
+			
+		});
+		coButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				notifyUserList(GroupType.회사);
+				
+			}
+		});
+		scButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				notifyUserList(GroupType.학교);
+				
+			}
+		});
+		homeButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				notifyUserList();
+				
+			}
+		});
+		faButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				notifyUserList(GroupType.가족);
+				
+			}
+		});
 		userList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -113,6 +154,7 @@ public class MainFrame extends JFrame {
 				// System.out.println(userList.getSelectedValue());
 				int memberId = MyStringParser.getid(userList.getSelectedValue().toString());
 				new DetailFrame(mainFrame, memberId);
+				mainFrame.setVisible(false);
 			}
 		});
 
@@ -126,12 +168,24 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-
+     //전체 데이터 갱신
 	public void notifyUserList() {
 		// 1.listModel 비우고!!
 		listModel.clear();
 		// 2.select해서 전체목록 가져오고!! List<Member>에 담기
 		// 3.listModel 채워주기!!(usetList 자동 갱신)
 		initData();
+	}
+	//그룹 데이터 갱신
+	public void notifyUserList(GroupType groupType) {
+		// 1.listModel 비우고!!
+		listModel.clear();
+		// 2.select해서 전체목록 가져오고!! List<Member>에 담기
+		// 3.listModel 채워주기!!(usetList 자동 갱신)
+		List<Member> members = memberService.그룹목록(groupType);
+		for(Member member : members) {
+			listModel.addElement(member);
+		}
+		
 	}
 }
